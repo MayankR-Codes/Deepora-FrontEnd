@@ -38,12 +38,11 @@ Deepora-FrontEnd/
 ├── checkout.html              # Checkout view & address verification
 ├── checkout.js                # Order placement & validation logic
 ├── index.html                 # Main storefront & 3D visualizer
-├── app.js                     # Core frontend interactions & Three.js 3D studio
+├── storefront.js              # Core frontend interactions & Three.js 3D studio
 ├── order-confirmation.html    # Order tracking & invoice confirmation UI
 ├── order-confirmation.js      # Order confirmation controller
 ├── video-maker.html           # Promotional video & poster creator
 ├── styles.css                 # Luxury dark/gold theme styling
-├── server.js                  # Zero-dependency local dev static server
 ├── robots.txt                 # Search engine crawler configuration
 ├── sitemap.xml                # SEO sitemap
 ├── .env.example               # Example frontend environment configuration

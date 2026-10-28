@@ -6,8 +6,8 @@ const fsSync = require('node:fs');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 
-// Root of frontend files is this directory
-const frontendRoot = path.resolve(__dirname);
+// Root of frontend files is parent directory
+const frontendRoot = path.resolve(__dirname, '..');
 const port = Number(process.env.FRONTEND_PORT || 4173);
 const host = process.env.FRONTEND_HOST || '127.0.0.1';
 

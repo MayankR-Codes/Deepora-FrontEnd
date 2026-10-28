@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Deepora handcrafted festive diya luxury storefront UI",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
+    "build": "echo 'Static storefront ready'",
+    "start": "node tools/server.js",
+    "dev": "node tools/server.js",
     "video-tool": "node tools/video-server.js"
   },
   "keywords": [
