@@ -2,7 +2,7 @@
 
 const $ = selector => document.querySelector(selector);
 const isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-const apiBase = window.DEEPORA_API_ORIGIN || (isLocalHost ? `${location.protocol}//${location.hostname}:4175` : location.origin);
+const apiBase = window.DEEPORA_API_ORIGIN || (window.DEEPORA_USE_LOCAL ? `${location.protocol}//${location.hostname}:4175` : 'https://deepora-backend.vercel.app');
 const reference = new URLSearchParams(location.search).get('ref') || '';
 
 function escapeHtml(value) {

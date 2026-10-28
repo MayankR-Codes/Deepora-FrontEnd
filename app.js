@@ -3,7 +3,7 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isLocalHost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-const authApiBase = window.DEEPORA_API_ORIGIN || (isLocalHost ? `${location.protocol}//${location.hostname}:4175` : location.origin);
+const authApiBase = window.DEEPORA_API_ORIGIN || (window.DEEPORA_USE_LOCAL ? `${location.protocol}//${location.hostname}:4175` : 'https://deepora-backend.vercel.app');
 let catalog = [];
 let catalogUnavailable = false;
 let activeFilter = 'diya';

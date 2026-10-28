@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('node:http');
+const https = require('node:https');
 const fsSync = require('node:fs');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -31,6 +32,29 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer(async (req, res) => {
+  // Proxy API requests to backend
+  if (req.url && (req.url.startsWith('/api/') || req.url === '/api')) {
+    const backendOrigin = process.env.DEEPORA_API_ORIGIN || 'https://deepora-backend.vercel.app';
+    const targetUrl = new URL(req.url, backendOrigin);
+    const proxyHeaders = { ...req.headers, host: targetUrl.host };
+    const proxyReq = https.request(
+      targetUrl,
+      {
+        method: req.method,
+        headers: proxyHeaders,
+      },
+      proxyRes => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res);
+      }
+    );
+    proxyReq.on('error', err => {
+      res.writeHead(502, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Backend proxy error', details: err.message }));
+    });
+    return req.pipe(proxyReq);
+  }
+
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, { Allow: 'GET, HEAD' });
     return res.end('Method not allowed');

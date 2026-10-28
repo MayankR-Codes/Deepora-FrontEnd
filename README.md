@@ -68,9 +68,9 @@ The storefront will be live at:
 👉 **[http://localhost:4173](http://localhost:4173)**
 
 ### 3. Connect to Backend API
-By default, the frontend automatically looks for the DEEPORA Backend API running at `http://127.0.0.1:4175`.
+By default, the frontend connects to the production Vercel backend at `https://deepora-backend.vercel.app`.
 
-To point the frontend to a custom or production backend API, define `window.DEEPORA_API_ORIGIN` or set `DEEPORA_API_ORIGIN` in your environment.
+To point the frontend to a local backend API during development, set `window.DEEPORA_USE_LOCAL = true` or specify `window.DEEPORA_API_ORIGIN` / `DEEPORA_API_ORIGIN`.
 
 ---
 
