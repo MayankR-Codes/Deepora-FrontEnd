@@ -31,6 +31,26 @@ const MIME_TYPES = {
   '.xml': 'application/xml; charset=utf-8',
 };
 
+function findSafePath(pathname) {
+  const candidateRoots = [
+    path.resolve(__dirname),
+    path.resolve(process.cwd()),
+    path.resolve('/var/task'),
+    path.resolve(__dirname, '..'),
+  ];
+  for (const root of candidateRoots) {
+    const candidatePath = path.resolve(root, `.${pathname}`);
+    if (candidatePath.startsWith(root) && fsSync.existsSync(candidatePath)) {
+      try {
+        if (fsSync.statSync(candidatePath).isFile()) {
+          return candidatePath;
+        }
+      } catch {}
+    }
+  }
+  return null;
+}
+
 async function handleRequest(req, res) {
   // Proxy API requests to backend
   if (req.url && (req.url.startsWith('/api/') || req.url === '/api')) {
@@ -73,18 +93,14 @@ async function handleRequest(req, res) {
   else if (pathname === '/account') pathname = '/account.html';
   else if (pathname === '/order-confirmation') pathname = '/order-confirmation.html';
 
-  const filePath = path.resolve(frontendRoot, `.${pathname}`);
-
-  // Prevent directory traversal attacks
-  if (!filePath.startsWith(frontendRoot + path.sep) && filePath !== frontendRoot) {
-    res.writeHead(403);
-    return res.end('Forbidden');
+  const filePath = findSafePath(pathname);
+  if (!filePath) {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('404 Not Found');
   }
 
   try {
-    const stats = await fs.stat(filePath);
-    if (!stats.isFile()) throw new Error('Not a file');
-
+    const stats = fsSync.statSync(filePath);
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
     const rangeHeader = req.headers.range;
