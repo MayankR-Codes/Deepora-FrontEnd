@@ -31,7 +31,7 @@ const MIME_TYPES = {
   '.xml': 'application/xml; charset=utf-8',
 };
 
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   // Proxy API requests to backend
   if (req.url && (req.url.startsWith('/api/') || req.url === '/api')) {
     const backendOrigin = process.env.DEEPORA_API_ORIGIN || 'https://deepora-backend.vercel.app';
@@ -126,8 +126,13 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     return res.end('404 Not Found');
   }
-});
+}
 
-server.listen(port, host, () => {
-  console.log(`Deepora Storefront UI running at http://${host}:${port}`);
-});
+module.exports = handleRequest;
+
+if (require.main === module) {
+  const server = http.createServer(handleRequest);
+  server.listen(port, host, () => {
+    console.log(`Deepora Storefront UI running at http://${host}:${port}`);
+  });
+}
