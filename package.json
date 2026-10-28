@@ -1,0 +1,21 @@
+{
+  "name": "deepora-frontend",
+  "version": "1.0.0",
+  "description": "Deepora handcrafted festive diya luxury storefront UI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "video-tool": "node tools/video-server.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "frontend",
+    "storefront",
+    "deepora",
+    "threejs",
+    "gsap"
+  ],
+  "author": "Mayank Rana",
+  "license": "ISC"
+}

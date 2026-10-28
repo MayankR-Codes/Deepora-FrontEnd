@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0908" />
+  <title>Your Account | Deepora</title>
+  <meta name="description" content="Sign in or create your Deepora account to manage orders, addresses, and saved pieces." />
+  <meta name="robots" content="noindex, follow" />
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="account-page">
+  <canvas class="account-stars" id="accountStars" aria-hidden="true"></canvas>
+  <header class="account-header"><a class="wordmark" href="index.html" aria-label="Deepora home"><span>DEEP</span><span class="wordmark-accent">ORA</span><span class="wordmark-dot">.</span></a><a class="account-back" href="index.html#collection">Back to the collection</a></header>
+  <main class="account-layout">
+    <section class="account-intro"><p class="eyebrow">A LITTLE LIGHT. A LITTLE CLOSER.</p><h1>Your Deepora<br /><em>account.</em></h1><p>Keep your details close and your bag ready for the moments worth celebrating.</p></section>
+    <section class="account-card" aria-labelledby="accountTitle">
+      <div id="accountForms">
+        <p class="eyebrow">YOUR ACCOUNT</p><h2 id="accountTitle">Welcome back</h2>
+        <div class="account-tabs" role="tablist" aria-label="Account actions"><button class="active" id="showSignin" role="tab" aria-selected="true">Sign in</button><button id="showSignup" role="tab" aria-selected="false">Create account</button></div>
+        <p class="account-feedback" id="accountFeedback" role="status" aria-live="polite"></p>
+        <form id="signinForm" class="account-form">
+          <label>Phone number or email<input name="identifier" autocomplete="username" placeholder="10-digit phone or email" required /></label>
+          <label>Password<div class="password-field"><input name="password" type="password" autocomplete="current-password" minlength="8" required /><button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></label>
+          <button class="button button-gold account-submit" type="submit">Sign in</button>
+        </form>
+        <section id="signupPanel" hidden>
+          <form id="signupForm" class="account-form">
+            <div class="name-fields"><label>First name<input name="firstName" autocomplete="given-name" maxlength="80" required /></label><label>Last name<input name="lastName" autocomplete="family-name" maxlength="80" required /></label></div>
+            <label>Phone number <span>(required)</span><div class="phone-field"><span aria-label="Country code">+91</span><input id="signupPhone" name="phone" type="tel" autocomplete="tel-national" placeholder="98765 43210" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" required /></div></label>
+          <label>Email address <span>(required, Gmail only)</span><input id="optionalSignupEmail" name="email" type="email" autocomplete="email" placeholder="you@gmail.com" pattern=".+@gmail\.com" required /></label>
+            <div class="email-code-actions"><button class="button button-outline account-secondary" id="sendEmailCode" type="button">Send verification code</button><p id="emailCodeStatus" class="email-code-status" role="status" aria-live="polite"></p></div>
+            <section id="emailCodePanel" class="email-code-panel" aria-label="Email verification" hidden>
+              <p>Enter the 6-digit code sent to your email.</p>
+              <div class="email-code-boxes" role="group" aria-label="Six-digit verification code">
+                <input aria-label="Verification digit 1" inputmode="numeric" autocomplete="one-time-code" maxlength="1" pattern="[0-9]" required />
+                <input aria-label="Verification digit 2" inputmode="numeric" maxlength="1" pattern="[0-9]" required />
+                <input aria-label="Verification digit 3" inputmode="numeric" maxlength="1" pattern="[0-9]" required />
+                <input aria-label="Verification digit 4" inputmode="numeric" maxlength="1" pattern="[0-9]" required />
+                <input aria-label="Verification digit 5" inputmode="numeric" maxlength="1" pattern="[0-9]" required />
+                <input aria-label="Verification digit 6" inputmode="numeric" maxlength="1" pattern="[0-9]" required />
+              </div>
+              <button class="button button-outline account-secondary" id="verifyEmailCode" type="button">Verify email</button>
+            </section>
+            <p id="emailVerifiedNote" class="verified-note" hidden>Email verified</p>
+            <div id="signupDetailsSection" hidden>
+            <div class="name-fields"><label>State<select name="state" required><option value="West Bengal" selected>West Bengal</option><option value="Odisha" disabled>Odisha (coming soon)</option></select></label><label>City<select name="city" required><option value="Kolkata" selected>Kolkata</option><option value="Bhubaneswar" disabled>Bhubaneswar (coming soon)</option></select></label></div>
+            <p class="address-heading">Delivery address</p>
+            <div class="name-fields"><label>Flat / house number<input name="addressFlat" autocomplete="address-line1" maxlength="80" placeholder="Flat 4B" required /></label><label>Building / society<input name="addressBuilding" maxlength="120" placeholder="Building name" required /></label></div>
+            <label>Street / area<input name="addressStreet" autocomplete="address-line2" maxlength="160" placeholder="Street, neighbourhood" required /></label>
+            <div class="name-fields"><label>PIN code<input name="pincode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="postal-code" placeholder="700001" required /></label><label>Landmark <span>(optional)</span><input name="addressLandmark" data-optional="true" maxlength="160" placeholder="Nearby landmark" /></label></div>
+            <label>Google Maps link <span>(optional)</span><input name="googleMapsUrl" data-optional="true" type="url" inputmode="url" placeholder="https://maps.google.com/..." /></label>
+            <div class="password-fields"><label>Password<div class="password-field"><input name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="At least 8 characters" required /><button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></label><label>Confirm password<div class="password-field"><input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="Re-enter password" required /><button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></label></div>
+            <button class="button button-gold account-submit" type="submit">Create account</button>
+            <p class="account-terms">We store your profile details securely so your bag is ready when you return.</p>
+            </div>
+          </form>
+        </section>
+      </div>
+      <section class="profile-panel" id="profilePanel" hidden>
+        <p class="eyebrow">YOUR DEEPORA PROFILE</p><h2 id="profileName"></h2><dl id="profileDetails"></dl>
+        <div id="profileOrdersContainer" style="margin: 24px 0 16px;">
+          <h3 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-light, #f0dfb8); margin-bottom: 12px;">Order History</h3>
+          <div id="profileOrdersList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+        <button class="button button-gold account-submit" id="returnToBag" type="button" hidden>Return to your bag</button>
+        <button class="button button-outline account-submit" id="signoutButton" type="button">Sign out</button>
+      </section>
+    </section>
+  </main>
+  <script src="account.js?v=20261028-email-verification"></script>
+</body>
+</html>

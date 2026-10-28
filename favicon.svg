@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Radial Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#1e1711" />
+      <stop offset="55%" stop-color="#0e0c0a" />
+      <stop offset="100%" stop-color="#050504" />
+    </radialGradient>
+
+    <!-- Outer Rim Metallic Gold Gradient -->
+    <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eec77e" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#73552b" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#eec77e" stop-opacity="0.6" />
+    </linearGradient>
+
+    <!-- Diya Bowl Metallic Gradient -->
+    <linearGradient id="bowlGrad" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#e5be74" />
+      <stop offset="22%" stop-color="#fff2d0" />
+      <stop offset="50%" stop-color="#b68128" />
+      <stop offset="80%" stop-color="#6e4d14" />
+      <stop offset="100%" stop-color="#3d2706" />
+    </linearGradient>
+
+    <!-- Diya Top Rim Gradient -->
+    <linearGradient id="topRimGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#a87a29" />
+      <stop offset="35%" stop-color="#fff5dc" />
+      <stop offset="70%" stop-color="#dfb970" />
+      <stop offset="100%" stop-color="#734e12" />
+    </linearGradient>
+
+    <!-- Ambient Flame Glow Behind -->
+    <radialGradient id="ambientGlow" cx="50%" cy="42%" r="48%">
+      <stop offset="0%" stop-color="#ff9924" stop-opacity="0.55" />
+      <stop offset="40%" stop-color="#d96e10" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Outer Flame Gradient -->
+    <linearGradient id="flameOuter" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#d9440f" />
+      <stop offset="42%" stop-color="#f58818" />
+      <stop offset="82%" stop-color="#ffd55c" />
+      <stop offset="100%" stop-color="#fffaea" />
+    </linearGradient>
+
+    <!-- Inner Flame Core Gradient -->
+    <linearGradient id="flameCore" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#f89d26" />
+      <stop offset="50%" stop-color="#fff2b3" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+
+    <!-- Star Glow Gradient -->
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#fedb7a" />
+      <stop offset="80%" stop-color="#d4af67" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#d4af67" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Rounded Squircle -->
+  <rect x="14" y="14" width="484" height="484" rx="120" fill="url(#bgGrad)" stroke="url(#rimGrad)" stroke-width="4.5" />
+
+  <!-- Ambient Flame Glow Behind Flame -->
+  <circle cx="256" cy="225" r="170" fill="url(#ambientGlow)" />
+
+  <!-- Diya Bowl Main Body -->
+  <path d="M108,266 C108,382 176,418 256,418 C336,418 404,382 404,266 C364,286 312,295 256,295 C200,295 148,286 108,266 Z" fill="url(#bowlGrad)" />
+
+  <!-- Top Rim of Diya Bowl -->
+  <ellipse cx="256" cy="266" rx="148" ry="29" fill="#1b140d" stroke="url(#topRimGrad)" stroke-width="5" />
+
+  <!-- Inner Oil Pool Glow -->
+  <ellipse cx="256" cy="268" rx="122" ry="19" fill="#38210c" />
+  <ellipse cx="256" cy="269" rx="80" ry="10" fill="#693b11" opacity="0.85" />
+
+  <!-- Diya Flame - Outer -->
+  <path d="M256,106 C290,178 326,222 312,264 C299,298 213,298 200,264 C186,222 222,178 256,106 Z" fill="url(#flameOuter)" />
+
+  <!-- Diya Flame - Inner Core -->
+  <path d="M256,146 C275,194 294,228 284,256 C275,276 237,276 228,256 C218,228 237,194 256,146 Z" fill="url(#flameCore)" />
+
+  <!-- Flame Brilliant Heart -->
+  <ellipse cx="256" cy="244" rx="15" ry="24" fill="#ffffff" opacity="0.95" />
+
+  <!-- Radiant Deepora 8-Point Star at Flame Zenith -->
+  <g transform="translate(256, 96)">
+    <!-- Vertical / Horizontal Ray -->
+    <polygon points="0,-36 5.5,-8 30,0 5.5,8 0,36 -5.5,8 -30,0 -5.5,-8" fill="url(#starGlow)" />
+    <!-- Diagonal Rays -->
+    <polygon points="0,-25 4,-6 21,0 4,6 0,25 -4,6 -21,0 -4,-6" transform="rotate(45)" fill="url(#starGlow)" opacity="0.9" />
+    <!-- Center Spark -->
+    <circle cx="0" cy="0" r="4" fill="#ffffff" />
+  </g>
+</svg>

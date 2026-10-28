@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Deepora · Hero film renderer</title>
+<link rel="icon" href="/favicon.ico" sizes="any" /><link rel="icon" href="/favicon.svg" type="image/svg+xml" /><link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<style>body{margin:0;background:#0b0907;color:#efe6d3;font:14px Arial,sans-serif;display:grid;min-height:100vh;place-items:center}.wrap{width:min(1000px,94vw)}h1{font:36px Georgia;color:#e1c47c}p{color:#b8ae9b}.frame{position:relative;background:#000;aspect-ratio:16/9;overflow:hidden;border:1px solid #614c29}canvas,video{display:block;width:100%;height:auto}.controls{display:flex;gap:14px;align-items:center;margin-top:16px}button{border:0;background:#d4af67;color:#16110a;padding:13px 18px;cursor:pointer;text-transform:uppercase;letter-spacing:.1em;font-size:10px}progress{flex:1;height:8px;accent-color:#d4af67}small{color:#8d826f}.preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}.busy{opacity:.55;pointer-events:none}</style></head>
+<body><main class="wrap"><h1>Deepora · The First Light</h1><p>Rendering a 10-second, silent, seamless hero loop from your diya photograph.</p><div class="frame"><canvas id="film" width="1280" height="720"></canvas><video id="preview" class="preview" controls loop muted playsinline></video></div><div class="controls"><button id="render">Render and save hero video</button><progress id="progress" max="10" value="0"></progress><span id="status">Ready</span></div><p><small>WebM · 1280 × 720 · 10 seconds · silent · loops smoothly</small></p></main>
+<script>
+const canvas=document.querySelector('#film'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height,duration=10,fps=30;
+const photo=new Image();photo.src='/assets/IMG_20261024_152923.jpg.jpeg';
+let particles=Array.from({length:45},()=>({x:Math.random()*W,y:Math.random()*H,r:.5+Math.random()*1.6,s:8+Math.random()*20,a:.12+Math.random()*.35,phase:Math.random()*6.28}));
+function draw(t){
+ const p=t/duration, beat=(1-Math.cos(2*Math.PI*p))/2, flick=0.94+0.06*Math.sin(t*7.4)+0.025*Math.sin(t*13.1);
+ ctx.save();ctx.clearRect(0,0,W,H);ctx.fillStyle='#090706';ctx.fillRect(0,0,W,H);
+ const scale=Math.max(W/photo.width,H/photo.height)*(1+0.035*beat),dw=photo.width*scale,dh=photo.height*scale;
+ const x=(W-dw)/2+Math.sin(2*Math.PI*p)*5,y=(H-dh)/2+(H-dh)*.08-10*beat;
+ ctx.filter='saturate(.82) contrast(1.08) brightness(.69) sepia(.12)';ctx.drawImage(photo,x,y,dw,dh);ctx.filter='none';
+ const shade=ctx.createLinearGradient(0,0,0,H);shade.addColorStop(0,'rgba(8,6,5,.20)');shade.addColorStop(.48,'rgba(10,7,5,.11)');shade.addColorStop(1,'rgba(8,5,4,.62)');ctx.fillStyle=shade;ctx.fillRect(0,0,W,H);
+ const glow=ctx.createRadialGradient(W*.49,H*.59,5,W*.49,H*.59,H*.58);glow.addColorStop(0,`rgba(234,143,44,${.23+.06*flick})`);glow.addColorStop(.25,'rgba(176,86,24,.12)');glow.addColorStop(1,'rgba(100,35,12,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+ // Flame sits at the bowl's wick; the original photo remains visible around it.
+ const fx=W*.49+Math.sin(t*1.7)*2, fy=H*.565, fh=55*flick;
+ ctx.save();ctx.globalAlpha=.8;const halo=ctx.createRadialGradient(fx,fy-fh*.45,1,fx,fy-fh*.45,72);halo.addColorStop(0,'rgba(255,192,78,.65)');halo.addColorStop(1,'rgba(239,133,36,0)');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(fx,fy-fh*.45,72,0,Math.PI*2);ctx.fill();
+ ctx.beginPath();ctx.moveTo(fx,fy);ctx.bezierCurveTo(fx-16*flick,fy-fh*.35,fx-9,fy-fh*.8,fx,fy-fh);ctx.bezierCurveTo(fx+8,fy-fh*.72,fx+18*flick,fy-fh*.33,fx,fy);ctx.closePath();const fire=ctx.createLinearGradient(fx,fy,fx,fy-fh);fire.addColorStop(0,'#e46b22');fire.addColorStop(.48,'#ffc14d');fire.addColorStop(1,'#fff0c0');ctx.fillStyle=fire;ctx.fill();
+ ctx.beginPath();ctx.moveTo(fx,fy-3);ctx.bezierCurveTo(fx-5,fy-14,fx-2,fy-26,fx+1,fy-34);ctx.bezierCurveTo(fx+8,fy-22,fx+8,fy-12,fx,fy-3);ctx.fillStyle='rgba(255,250,221,.9)';ctx.fill();ctx.restore();
+ // Fine floating embers follow a slow, repeating drift.
+ particles.forEach(q=>{const yy=(q.y-(t*q.s+Math.sin(t+q.phase)*10+H*2))%(H+20);ctx.globalAlpha=q.a*(.65+.35*Math.sin(t*2+q.phase));ctx.fillStyle='#efc675';ctx.beginPath();ctx.arc(q.x+Math.sin(t*.35+q.phase)*9,yy,q.r,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
+ const vignette=ctx.createRadialGradient(W*.5,H*.5,H*.25,W*.5,H*.5,H*.78);vignette.addColorStop(.55,'rgba(0,0,0,0)');vignette.addColorStop(1,'rgba(0,0,0,.48)');ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
+ ctx.fillStyle='rgba(244,225,184,.8)';ctx.font='12px Arial';ctx.letterSpacing='4px';ctx.fillText('D I V Y A',54,H-60);ctx.fillStyle='rgba(244,225,184,.55)';ctx.font='8px Arial';ctx.fillText('A LITTLE FLAME. A TIMELESS LEGACY.',55,H-40);
+ ctx.restore();
+}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+document.querySelector('#render').onclick=async()=>{
+ const button=document.querySelector('#render'),status=document.querySelector('#status'),progress=document.querySelector('#progress');
+ if(!photo.complete||!photo.naturalWidth){status.textContent='Could not load the diya photo';return}
+ const type=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(x=>MediaRecorder.isTypeSupported(x));
+ if(!type){status.textContent='This browser cannot encode WebM';return}
+ button.classList.add('busy');button.disabled=true;status.textContent='Rendering…';progress.value=0;
+ const stream=canvas.captureStream(fps),chunks=[],recorder=new MediaRecorder(stream,{mimeType:type,videoBitsPerSecond:6500000});
+ recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+ const done=new Promise((resolve,reject)=>{recorder.onstop=resolve;recorder.onerror=()=>reject(recorder.error)});
+ recorder.start(250);let start=performance.now();
+ while(performance.now()-start<duration*1000){const elapsed=(performance.now()-start)/1000;draw(elapsed%duration);progress.value=Math.min(duration,elapsed);await wait(1000/fps)}
+ recorder.stop();await done;stream.getTracks().forEach(t=>t.stop());
+ const blob=new Blob(chunks,{type:'video/webm'});status.textContent=`Saving ${(blob.size/1024/1024).toFixed(1)} MB…`;
+ const response=await fetch('/save-video',{method:'POST',headers:{'Content-Type':'video/webm'},body:blob});
+ if(!response.ok)throw new Error(await response.text());
+ const preview=document.querySelector('#preview');preview.src=URL.createObjectURL(blob);preview.style.display='block';canvas.style.display='none';await preview.play();
+ const poster=canvas.toDataURL('image/jpeg',.88);const posterResponse=await fetch('/save-poster',{method:'POST',headers:{'Content-Type':'text/plain'},body:poster.split(',')[1]});
+ status.textContent=`Saved ${((await response.json()).size/1024/1024).toFixed(1)} MB · preview ready`;
+ button.classList.remove('busy');button.disabled=false;
+};
+photo.onload=()=>draw(0);photo.onerror=()=>document.querySelector('#status').textContent='Could not load the diya photo';
+</script></body></html>
